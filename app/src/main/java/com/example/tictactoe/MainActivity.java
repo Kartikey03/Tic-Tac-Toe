@@ -3,6 +3,7 @@ package com.example.tictactoe;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
+import android.widget.LinearLayout;
 import android.widget.Toast;
 
 import androidx.activity.EdgeToEdge;
@@ -14,18 +15,19 @@ import androidx.core.view.WindowInsetsCompat;
 public class MainActivity extends AppCompatActivity {
 Button btn1, btn2, btn3, btn4, btn5, btn6, btn7, btn8, btn9;
 String b1, b2, b3, b4, b5, b6, b7, b8, b9;
+LinearLayout LlMain;
 int count = 0;
 int flag = 0;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-
         init();
 
     }
 
     private void init(){
+        LlMain = findViewById(R.id.Llmain);
         btn1 = findViewById(R.id.btn1);
         btn2 = findViewById(R.id.btn2);
         btn3 = findViewById(R.id.btn3);
@@ -40,13 +42,16 @@ int flag = 0;
     //now, we will not create 9 different onclicklisteners for 9 buttons, instead what we can do is that create a method that have only 1 onclicklistener as all the 9 buttons have the same functionality which is to print "X" or "O" on the button
     public void Check(View view){
         Button btnCurrent = (Button) view; //here we are typecasting the view class to the button class as we can see that the view has the refence of the button class object
+        //the condition below is to check whether the box is empty or not, if the box is not empty, then only all the following code will be executed but if the box already has "X" or "O", then nothing will happen
         if (btnCurrent.getText().toString().equals("")) {
             count++;
             if (flag == 0) {
                 btnCurrent.setText("X");
+                LlMain.setBackgroundColor(getResources().getColor(R.color.X));
                 flag = 1;
             } else {
                 btnCurrent.setText("O");
+                LlMain.setBackgroundColor(getResources().getColor(R.color.O));
                 flag = 0;
             }
 
@@ -61,7 +66,7 @@ int flag = 0;
                 b8 = btn8.getText().toString();
                 b9 = btn9.getText().toString();
 
-                //defining condiditons for winning
+                //defining conditions for winning
                 if (b1.equals(b2) && b2.equals(b3) && !b1.equals("")) {
                     //1
                     Toast.makeText(this, "Winner is " + b1, Toast.LENGTH_SHORT).show();
@@ -94,14 +99,16 @@ int flag = 0;
                     //8
                     Toast.makeText(this, "Winner is " + b3, Toast.LENGTH_SHORT).show();
                     newGame();
+                } else if (count == 9) {
+                    Toast.makeText(this, "Game Draw", Toast.LENGTH_SHORT).show();
+                    newGame();
                 }
-
             }
         }
-
     }
 
     public void newGame(){
+        LlMain.setBackgroundColor(getResources().getColor(R.color.white));
         btn1.setText("");
         btn2.setText("");
         btn3.setText("");
@@ -114,4 +121,20 @@ int flag = 0;
         flag=0;
         count=0;
     }
+    public void newGame(View view){
+        LlMain.setBackgroundColor(getResources().getColor(R.color.white));
+        btn1.setText("");
+        btn2.setText("");
+        btn3.setText("");
+        btn4.setText("");
+        btn5.setText("");
+        btn6.setText("");
+        btn7.setText("");
+        btn8.setText("");
+        btn9.setText("");
+        flag=0;
+        count=0;
+    }
+
+
 }
